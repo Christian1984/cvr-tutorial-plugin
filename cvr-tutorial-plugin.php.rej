@@ -1,0 +1,34 @@
+diff a/cvr-tutorial-plugin.php b/cvr-tutorial-plugin.php	(rejected hunks)
+@@ -91,18 +91,16 @@
+ {
+     $cvrTutorialPlugin = new CvrTutorialPlugin();
+     $cvrTutorialPlugin->register();
+-}
+-
+-//
+-// register hooks
+-//
+-
+-$path = untrailingslashit(plugin_dir_path(__FILE__));
+-
+-// activation
+-require_once join(DIRECTORY_SEPARATOR, array($path, 'inc', 'cvr-tutorial-plugin-activate.php'));
+-register_activation_hook(__FILE__, array('CvrTutorialPluginActivate', 'activate'));
+ 
+-// deactivation
+-require_once join(DIRECTORY_SEPARATOR, array($path, 'inc', 'cvr-tutorial-plugin-deactivate.php'));
+-register_deactivation_hook(__FILE__, array('CvrTutorialPluginDeactivate', 'deactivate'));
+\ No newline at end of file
++    //
++    // register hooks
++    //
++    
++    // activation
++    require_once join(DIRECTORY_SEPARATOR, array($cvrTutorialPlugin->plugin_dir_folder, 'inc', 'cvr-tutorial-plugin-activate.php'));
++    register_activation_hook(__FILE__, array('CvrTutorialPluginActivate', 'activate'));
++    
++    // deactivation
++    require_once join(DIRECTORY_SEPARATOR, array($cvrTutorialPlugin->plugin_dir_folder, 'inc', 'cvr-tutorial-plugin-deactivate.php'));
++    register_deactivation_hook(__FILE__, array('CvrTutorialPluginDeactivate', 'deactivate'));
++}
+\ No newline at end of file

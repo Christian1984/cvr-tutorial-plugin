@@ -43,79 +43,12 @@ if ($composer_autoload)
     require_once($composer_autoload);
 }
 
-use Inc\Activate;
-use Inc\Deactivate;
+define('PLUGIN_PATH', untrailingslashit(plugin_dir_path(__FILE__)));
+define('PLUGIN_URL', plugin_dir_url(__FILE__));
+define('PLUGIN_BASENAME', plugin_basename(__FILE__));
 
-class CvrTutorialPlugin
+if (class_exists('Inc\\Init'))
 {
-    public $plugin_dir_folder;
-    public $plugin;
-
-    function __construct()
-    {
-        add_action('init', array('CvrTutorialPlugin', 'custom_post_type'));
-
-        $this->plugin_dir_folder = untrailingslashit(plugin_dir_path(__FILE__));
-        $this->plugin = plugin_basename(__FILE__);
-    }
-
-    static function custom_post_type()
-    {
-        register_post_type('book', ['public' => true, 'label' => 'Book']);
-    }
-
-    function activate()
-    {
-        Activate::activate();
-        CvrTutorialPlugin::custom_post_type();
-    }
-
-    function register()
-    {
-        add_action('admin_enqueue_scripts', array($this, 'enqueue'));
-        add_action('admin_menu', array($this, 'add_admin_pages'));
-        add_filter("plugin_action_links_{$this->plugin}", array($this, 'settings_link'));
-    }
-
-    function settings_link($links)
-    {
-        $settings_link = '<a href="admin.php?page=cvr_tutorial_plugin">Settings</a>';
-        array_push($links, $settings_link);
-        return $links;
-    }
-
-    function enqueue()
-    {
-        //enqueue all our scripts
-        wp_enqueue_style('mypluginstyle', plugins_url('/assets/mystyle.css', __FILE__));
-        wp_enqueue_script('mypluginscript', plugins_url('/assets/myscript.js', __FILE__));
-    }
-
-    function add_admin_pages()
-    {
-        add_menu_page('CVR Tutorial Plugin', 'CVR Tutorial', 'manage_options', 'cvr_tutorial_plugin', array($this, 'admin_index'), 'dashicons-sos', 110);
-    }
-
-    function admin_index()
-    {
-        //require template
-        require_once join(DIRECTORY_SEPARATOR, array($this->plugin_dir_folder, 'templates', 'admin.php'));
-    }
+    Inc\Init::register_services();
 }
 
-// initialize  plugin main class
-if (class_exists('CvrTutorialPlugin'))
-{
-    $cvrTutorialPlugin = new CvrTutorialPlugin();
-    $cvrTutorialPlugin->register();
-
-    //
-    // register hooks
-    //
-    
-    // activation
-    register_activation_hook(__FILE__, array($cvrTutorialPlugin, 'activate'));
-    
-    // deactivation
-    register_deactivation_hook(__FILE__, array('Inc\Deactivate', 'deactivate'));
-}
