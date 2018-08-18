@@ -37,52 +37,36 @@ if (!defined('ABSPATH'))
 
 class CvrTutorialPlugin
 {
-    function __construct()
+    public function __construct()
     {
-        // generate a Custom Post Type (CPT)
         add_action('init', array($this, 'custom_post_type'));
     }
 
-    function register()
+    public function register()
     {
         add_action('admin_enqueue_scripts', array($this, 'enqueue'));
-        //add_action('wp_enqueue_scripts', array($this, 'enqueue')); //use wp_ instead of _admin if the resource should be registered for frontend usage!
     }
 
-    function activate()
+    public function activate()
     {
-        // register the Custom Post Type (CPT). 
         // This is a backup for the registration above, in case the constructor and init already ran
         $this->custom_post_type();
-
-        // flush rewrite rules
         flush_rewrite_rules();
     }
 
-    function deactivate()
+    public function deactivate()
     {
-        // flush rewrite rules
         flush_rewrite_rules();
     }
 
-    function enqueue()
+    public function enqueue()
     {
         //enqueue all our scripts
         wp_enqueue_style('mypluginstyle', plugins_url('/assets/mystyle.css', __FILE__));
         wp_enqueue_script('mypluginscript', plugins_url('/assets/myscript.js', __FILE__));
     }
 
-    /*
-    // must be static!
-    // we use unistall.php instead
-    function uninstall()
-    {
-        // e.g. delete Custom Post Type (CPT)
-        // e.g. delete all plugin data from the DB 
-    }
-    */
-
-    function custom_post_type()
+    public function custom_post_type()
     {
         register_post_type('book', ['public' => true, 'label' => 'Book']);
     }
@@ -104,6 +88,3 @@ register_activation_hook(__FILE__, array($cvrTutorialPlugin, 'activate'));
 
 // deactivation
 register_deactivation_hook(__FILE__, array($cvrTutorialPlugin, 'deactivate'));
-
-// uninstall
-// register_uninstall_hook(__FILE__, array($cvrTutorialPlugin, 'uninstall')); //this requires a STATIC uninstall method!
