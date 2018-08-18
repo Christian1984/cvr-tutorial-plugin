@@ -37,21 +37,41 @@ if (!defined('ABSPATH'))
 
 class CvrTutorialPlugin
 {
+    function __construct()
+    {
+        // generate a Custom Post Type (CPT)
+        add_action('init', array($this, 'custom_post_type'));
+    }
+
     function activate()
-    {        
-        // e.g. generate a Custom Post Type (CPT)
-        // e.g. flush rewrite rules
+    {
+        // register the Custom Post Type (CPT). 
+        // This is a backup for the registration above, in case the constructor and init already ran
+        $this->custom_post_type();
+
+        // flush rewrite rules
+        flush_rewrite_rules();
     }
 
     function deactivate()
     {
-        //e.g. flush rewrite rules
+        // flush rewrite rules
+        flush_rewrite_rules();
     }
 
+    /*
+    // must be static!
+    // we use unistall.php instead
     function uninstall()
     {
         // e.g. delete Custom Post Type (CPT)
         // e.g. delete all plugin data from the DB 
+    }
+    */
+
+    function custom_post_type()
+    {
+        register_post_type('book', ['public' => true, 'label' => 'Book']);
     }
 }
 
@@ -72,3 +92,4 @@ register_activation_hook(__FILE__, array($cvrTutorialPlugin, 'activate'));
 register_deactivation_hook(__FILE__, array($cvrTutorialPlugin, 'deactivate'));
 
 // uninstall
+// register_uninstall_hook(__FILE__, array($cvrTutorialPlugin, 'uninstall')); //this requires a STATIC uninstall method!
