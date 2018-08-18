@@ -43,6 +43,12 @@ class CvrTutorialPlugin
         add_action('init', array($this, 'custom_post_type'));
     }
 
+    function register()
+    {
+        add_action('admin_enqueue_scripts', array($this, 'enqueue'));
+        //add_action('wp_enqueue_scripts', array($this, 'enqueue')); //use wp_ instead of _admin if the resource should be registered for frontend usage!
+    }
+
     function activate()
     {
         // register the Custom Post Type (CPT). 
@@ -57,6 +63,13 @@ class CvrTutorialPlugin
     {
         // flush rewrite rules
         flush_rewrite_rules();
+    }
+
+    function enqueue()
+    {
+        //enqueue all our scripts
+        wp_enqueue_style('mypluginstyle', plugins_url('/assets/mystyle.css', __FILE__));
+        wp_enqueue_script('mypluginscript', plugins_url('/assets/myscript.js', __FILE__));
     }
 
     /*
@@ -79,6 +92,7 @@ class CvrTutorialPlugin
 if (class_exists('CvrTutorialPlugin'))
 {
     $cvrTutorialPlugin = new CvrTutorialPlugin();
+    $cvrTutorialPlugin->register();
 }
 
 //
