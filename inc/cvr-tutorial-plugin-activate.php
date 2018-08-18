@@ -13,7 +13,7 @@ class CvrTutorialPluginActivate
     public static function activate()
     {
         error_log('activate');
-        register_post_type('book', ['public' => true, 'label' => 'Book']);
+        CvrTutorialPlugin::custom_post_type();
         flush_rewrite_rules();
     }
 }
