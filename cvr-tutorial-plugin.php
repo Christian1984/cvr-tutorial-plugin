@@ -47,28 +47,11 @@ class CvrTutorialPlugin
         add_action('admin_enqueue_scripts', array($this, 'enqueue'));
     }
 
-    public function activate()
-    {
-        // This is a backup for the registration above, in case the constructor and init already ran
-        $this->custom_post_type();
-        flush_rewrite_rules();
-    }
-
-    public function deactivate()
-    {
-        flush_rewrite_rules();
-    }
-
     public function enqueue()
     {
         //enqueue all our scripts
         wp_enqueue_style('mypluginstyle', plugins_url('/assets/mystyle.css', __FILE__));
         wp_enqueue_script('mypluginscript', plugins_url('/assets/myscript.js', __FILE__));
-    }
-
-    public function custom_post_type()
-    {
-        register_post_type('book', ['public' => true, 'label' => 'Book']);
     }
 }
 
@@ -83,8 +66,12 @@ if (class_exists('CvrTutorialPlugin'))
 // register hooks
 //
 
+$path = untrailingslashit(plugin_dir_path(__FILE__));
+
 // activation
-register_activation_hook(__FILE__, array($cvrTutorialPlugin, 'activate'));
+require_once join(DIRECTORY_SEPARATOR, array($path, 'inc', 'cvr-tutorial-plugin-activate.php'));
+register_activation_hook(__FILE__, array('CvrTutorialPluginActivate', 'activate'));
 
 // deactivation
-register_deactivation_hook(__FILE__, array($cvrTutorialPlugin, 'deactivate'));
+require_once join(DIRECTORY_SEPARATOR, array($path, 'inc', 'cvr-tutorial-plugin-deactivate.php'));
+register_deactivation_hook(__FILE__, array('CvrTutorialPluginDeactivate', 'deactivate'));
