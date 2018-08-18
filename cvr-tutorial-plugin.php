@@ -35,6 +35,17 @@ if (!defined('ABSPATH'))
     die('Direct file access is restricted! Thanks for stopping by :-)');
 }
 
+// composer autoload
+$composer_autoload = join(DIRECTORY_SEPARATOR, array(dirname(__FILE__), 'vendor', 'autoload.php'));
+
+if ($composer_autoload)
+{
+    require_once($composer_autoload);
+}
+
+use Inc\Activate;
+use Inc\Deactivate;
+
 class CvrTutorialPlugin
 {
     public $plugin_dir_folder;
@@ -51,6 +62,12 @@ class CvrTutorialPlugin
     static function custom_post_type()
     {
         register_post_type('book', ['public' => true, 'label' => 'Book']);
+    }
+
+    function activate()
+    {
+        Activate::activate();
+        CvrTutorialPlugin::custom_post_type();
     }
 
     function register()
@@ -97,10 +114,8 @@ if (class_exists('CvrTutorialPlugin'))
     //
     
     // activation
-    require_once join(DIRECTORY_SEPARATOR, array($cvrTutorialPlugin->plugin_dir_folder, 'inc', 'cvr-tutorial-plugin-activate.php'));
-    register_activation_hook(__FILE__, array('CvrTutorialPluginActivate', 'activate'));
+    register_activation_hook(__FILE__, array($cvrTutorialPlugin, 'activate'));
     
     // deactivation
-    require_once join(DIRECTORY_SEPARATOR, array($cvrTutorialPlugin->plugin_dir_folder, 'inc', 'cvr-tutorial-plugin-deactivate.php'));
-    register_deactivation_hook(__FILE__, array('CvrTutorialPluginDeactivate', 'deactivate'));
+    register_deactivation_hook(__FILE__, array('Inc\Deactivate', 'deactivate'));
 }

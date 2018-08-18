@@ -1,0 +1,19 @@
+{
+    "name": "christian/cvr-tutorial-plugin",
+    "description": "This is a plugin sandbox to follow along Alicaddd's wp plugin tutorial",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "ChrisVomRhein",
+            "email": "me@example.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Inc\\": "./inc"
+        }
+    }
+}

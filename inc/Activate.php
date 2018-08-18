@@ -3,16 +3,18 @@
  * @package CvrTutorialPlugin
  */
 
-if (!defined('ABSPATH'))
+namespace Inc;
+
+/*if (!defined('ABSPATH'))
 {
     die('Direct file access is restricted! Thanks for stopping by :-)');
-}
+}*/
 
-class CvrTutorialPluginDeactivate
+class Activate
 {
-    public static function deactivate()
+    public static function activate()
     {
-        error_log('deactivate');
+        error_log('activate');
         flush_rewrite_rules();
     }
 }
