@@ -14,7 +14,7 @@ class Deactivate
 {
     public static function deactivate()
     {
-        error_log('deactivate');
+        //TODO
         flush_rewrite_rules();
     }
 }

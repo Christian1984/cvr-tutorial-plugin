@@ -67,8 +67,9 @@ register_deactivation_hook(__FILE__, 'deactivate_cvr_tutorial_plugin');
 
 //
 // register init action
-//
-add_action('init', Inc\Base\Activate::custom_post_type);
+// e.g. add_action('init', Inc\Base\Activate::custom_post_type);
+
+//TODO
 
 if (class_exists('Inc\\Init'))
 {
