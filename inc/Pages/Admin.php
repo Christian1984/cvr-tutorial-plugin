@@ -11,23 +11,38 @@ if (!defined('ABSPATH'))
 }
 
 use \Inc\Base\BaseController;
+use \Inc\Api\SettingsApi;
 
 class Admin extends BaseController
 {
+    private $settings;
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->settings = new SettingsApi();
+    }
+
     function register()
     {
-        add_action('admin_menu', array($this, 'add_admin_pages'));
+        $pages = array(
+            array(
+                'page_title' => 'CVR Tutorial Plugin',
+                'menu_title' => 'CVR Tutorial',
+                'capability' => 'manage_options',
+                'menu_slug' => 'cvr_tutorial_plugin',
+                'callback' => function() { echo '<h1>CVR Tutorial Plugin H1</h1>'; },
+                'icon_url' => 'dashicons-sos',
+                'position' => 110,
+            )
+        );
+
+        $this->settings
+            ->addPages($pages)
+            ->register();
+
+        error_log("plugin_action_links_{$this->plugin_basename}");
         add_filter("plugin_action_links_{$this->plugin_basename}", array($this, 'settings_link'));
-    }
-
-    function add_admin_pages()
-    {
-        add_menu_page('CVR Tutorial Plugin', 'CVR Tutorial', 'manage_options', 'cvr_tutorial_plugin', array($this, 'admin_index'), 'dashicons-sos', 110);
-    }
-
-    public function admin_index()
-    {
-        require_once(join(DIRECTORY_SEPARATOR, array($this->plugin_path, 'templates', 'admin.php')));
     }
 
     function settings_link($links)
