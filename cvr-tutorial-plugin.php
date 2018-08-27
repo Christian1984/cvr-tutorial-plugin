@@ -43,9 +43,32 @@ if ($composer_autoload)
     require_once($composer_autoload);
 }
 
+// define constants
 define('PLUGIN_PATH', untrailingslashit(plugin_dir_path(__FILE__)));
 define('PLUGIN_URL', plugin_dir_url(__FILE__));
 define('PLUGIN_BASENAME', plugin_basename(__FILE__));
+
+// activation and deactivation code
+function activate_cvr_tutorial_plugin()
+{
+    Inc\Base\Activate::activate();
+}
+
+function deactivate_cvr_tutorial_plugin()
+{
+    Inc\Base\Deactivate::deactivate();
+}
+
+//
+// register activation and deactivation hooks
+//
+register_activation_hook(__FILE__, 'activate_cvr_tutorial_plugin');
+register_deactivation_hook(__FILE__, 'deactivate_cvr_tutorial_plugin');
+
+//
+// register init action
+//
+add_action('init', Inc\Base\Activate::custom_post_type);
 
 if (class_exists('Inc\\Init'))
 {
