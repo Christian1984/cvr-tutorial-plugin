@@ -5,12 +5,14 @@
 
 namespace Inc\Base;
 
+use \Inc\Base\BaseController;
+
 if (!defined('ABSPATH'))
 {
     die('Direct file access is restricted! Thanks for stopping by :-)');
 }
 
-class Enqueue
+class Enqueue extends BaseController
 {
     function register()
     {
@@ -24,14 +26,14 @@ class Enqueue
     public  function admin_enqueue()
     {
         //enqueue all our scripts
-        wp_enqueue_style('mypluginstyle', PLUGIN_URL . '/assets/mystyle.css');
-        wp_enqueue_script('mypluginscript', PLUGIN_URL . '/assets/myscript.js');
+        wp_enqueue_style('mypluginstyle', "{$this->plugin_url}assets/mystyle.css");
+        wp_enqueue_script('mypluginscript', "{$this->plugin_url}assets/myscript.js");
     }
 
     public  function wp_enqueue()
     {
         //enqueue all our scripts
-        wp_enqueue_style('mypluginstyle', PLUGIN_URL . '/assets/mystyle.css');
-        wp_enqueue_script('mypluginscript', PLUGIN_URL . '/assets/myscript.js');
+        wp_enqueue_style('mypluginstyle', "{$this->plugin_url}assets/mystyle.css");
+        wp_enqueue_script('mypluginscript', "{$this->plugin_url}assets/myscript.js");
     }
 }

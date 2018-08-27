@@ -10,12 +10,14 @@ if (!defined('ABSPATH'))
     die('Direct file access is restricted! Thanks for stopping by :-)');
 }
 
-class Admin
+use \Inc\Base\BaseController;
+
+class Admin extends BaseController
 {
     function register()
     {
         add_action('admin_menu', array($this, 'add_admin_pages'));
-        add_filter('plugin_action_links_' . PLUGIN_BASENAME, array($this, 'settings_link'));
+        add_filter("plugin_action_links_{$this->plugin_basename}", array($this, 'settings_link'));
     }
 
     function add_admin_pages()
@@ -25,7 +27,7 @@ class Admin
 
     public function admin_index()
     {
-        require_once(join(DIRECTORY_SEPARATOR, array(PLUGIN_PATH, 'templates', 'admin.php')));
+        require_once(join(DIRECTORY_SEPARATOR, array($this->plugin_path, 'templates', 'admin.php')));
     }
 
     function settings_link($links)
